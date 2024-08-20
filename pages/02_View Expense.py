@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-st.set_option('deprecation.showPyplotGlobalUse', False)
+#st.set_option('deprecation.showPyplotGlobalUse', False)
 
 excel_file_path = "data/expense.csv"
 
@@ -40,11 +40,17 @@ def execution():
     st.title("Categories :card_index_dividers:")
 
     category_dataframe = dataframe.groupby('Category')['Amount'].sum()
-    plt.pie(category_dataframe, labels=category_dataframe.index, autopct='%.2f',textprops={'fontsize': 8.5,"color":"black"},shadow=True)
+    
+    # Create a figure and axis for the pie chart
+    fig, ax = plt.subplots()
+    ax.pie(category_dataframe, labels=category_dataframe.index, autopct='%.2f', textprops={'fontsize': 8.5, "color": "black"}, shadow=True)
     plt.gcf().set_facecolor('none')
-    st.pyplot()
+
+    # Display the pie chart
+    st.pyplot(fig)
 
 try:
     execution()
-except:
+except Exception as e:
     st.title("Please add some expenses :money_with_wings: ")
+    st.error(f"Error: {e}")
